@@ -1,0 +1,22 @@
+site_name: (3,1)-MCDE documentation
+plugins:
+- search
+- mkdocstrings:
+    handlers:
+      python:
+        paths:
+         - src
+        options:
+          members_order: alphabetical
+          
+markdown_extensions:
+  - pymdownx.arithmatex:
+      generic: true
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js
+
+nav:
+  - Home: index.md
+  - About: about.md
+  - API: api.md
