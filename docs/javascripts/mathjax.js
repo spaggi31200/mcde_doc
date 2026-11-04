@@ -1,13 +1,32 @@
+// window.MathJax = {
+//   tex: {
+//     inlineMath: [['$', '$'], ['\\(', '\\)']],
+//     displayMath: [['$$', '$$'], ['\\[', '\\]']],
+//     processEscapes: true,
+//     processEnvironments: true,
+//     packages: {'[+]': ['ams']}
+//   },
+//   options: {
+//     ignoreHtmlClass: ".*",
+//     processHtmlClass: "arithmatex"
+//   }
+// };
 window.MathJax = {
   tex: {
-    inlineMath: [['$', '$'], ['\\(', '\\)']],
-    displayMath: [['$$', '$$'], ['\\[', '\\]']],
+    inlineMath: [["\\(", "\\)"]],
+    displayMath: [["\\[", "\\]"]],
     processEscapes: true,
-    processEnvironments: true,
-    packages: {'[+]': ['ams']}
+    processEnvironments: true
   },
   options: {
     ignoreHtmlClass: ".*|",
     processHtmlClass: "arithmatex"
   }
 };
+
+document$.subscribe(() => { 
+  MathJax.startup.output.clearCache()
+  MathJax.typesetClear()
+  MathJax.texReset()
+  MathJax.typesetPromise()
+})
