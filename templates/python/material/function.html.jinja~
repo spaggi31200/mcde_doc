@@ -1,0 +1,11 @@
+{% extends "_base/function.html" %}
+
+{% block contents %}
+<details>
+    <summary>
+        {{ function.name }} {{ function.signature }}
+    </summary>
+
+    {{ block.super }}
+</details>
+{% endblock contents %}

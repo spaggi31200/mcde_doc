@@ -1,0 +1,14 @@
+{% extends "_base/function.html.jinja" %}
+
+{% block heading %}
+{% endblock heading %}
+
+{% block contents %}
+<details class="mkdocstrings-function">
+    <summary>
+        <strong>{{ function.name }}</strong>
+    </summary>
+
+    {{ super() }}
+</details>
+{% endblock contents %}

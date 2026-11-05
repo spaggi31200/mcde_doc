@@ -455,7 +455,28 @@ class MCDE():
                     return self.HeffSBSpinAdaptSparsemat
                 
     def saveMCDE(self,filename=None):
+        """
+        Saves the MCDE class object as `filename`.npz. If no `filename`
+        is given, the current time is taken as a file name.
+
+        The MCDE class object can be loaded with `loadMCDE()`.
+
+        It is useful for storing calculations like the effective Hamiltonian.
+
+        Parameters:
+           filename:
+             file name in which the MCDE object is saved. Saves it as `filename`.npz. (string)
         
+        Returns:
+           None
+             
+        Notes:
+           Usage: `MCDE2409_parallel.MCDE.saveMCDE(filename)`.
+        
+        See Also:
+            -loadMCDE:
+            Loads an MCDE object as "filename.npz".
+        """
         if filename is None:
             filename=str(time.time())
         np.savez(filename+".npz",mcde=self)
@@ -463,33 +484,206 @@ class MCDE():
     
     @staticmethod        
     def loadMCDE(filename):
+        """
+        Loads the MCDE class object saved in `filename`.npz.
+
+        The MCDE class object can be saved with `saveMCDE()`.
+
+        It is useful for storing calculations like the effective Hamiltonian.
+
+        Parameters:
+           filename:
+             file name in which the MCDE object is saved. File name ends with .npz  (string)
+        
+        Returns:
+           object:
+             MCDE class.
+
+        Notes:
+           Usage: `object = MCDE2409_parallel.MCDE.loadMCDE(filename)`.
+        
+        See Also:
+            -saveMCDE:
+            Saves an MCDE object as "filename.npz".
+        """
         data = np.load(filename+".npz", allow_pickle=True)
         print("MCDE object loaded from " + filename+".npz")
         return data['mcde'].item()                
 
     
     def c2g(self,ind):
+        """
+        Returns switched indices in the chemist's notation
+        to Gabi's notation.
+
+        Chemist's notation follows the two-integral repulsion integral
+        definition of
+
+        \[
+        (ij|kl) = \\int\\text{d}x_1\\text{d}x_2\\phi^\\ast_i(x_1)\\phi_j(x_1)\\phi^\\ast_k(x_2)\\phi_l(x_2)v_c(r_1,r_2),
+        \]
+
+        whereas Gabi's notation follows
+
+        \[
+        <ik|lj> = \\int\\text{d}x_1\\text{d}x_2\\phi^\\ast_i(x_1)\\phi^\\ast_k(x_2)\\phi_l(x_2)\\phi_j(x_1)v_c(r_1,r_2).
+        \]
+
+        Parameters:
+           ind:
+             Indices to be switched. (int)
+        
+        Returns:
+           int array:
+             Array of switched indices.
+             
+        
+        See Also:
+            -g2c:
+            Switch Gabi's to chemist's notation.
+        """
         return [ind[0],ind[2],ind[3],ind[1]]        
     def g2c(self,ind):
+        """
+        Returns switched indices in Gabi's notation
+        to chemist's notation.
+
+        Chemist's notation follows the two-integral repulsion integral
+        definition of
+
+        \[
+        (ij|kl) = \\int\\text{d}x_1\\text{d}x_2\\phi^\\ast_i(x_1)\\phi_j(x_1)\\phi^\\ast_k(x_2)\\phi_l(x_2)v_c(r_1,r_2),
+        \]
+
+        whereas Gabi's notation follows
+
+        \[
+        <ik|lj> = \\int\\text{d}x_1\\text{d}x_2\\phi^\\ast_i(x_1)\\phi^\\ast_k(x_2)\\phi_l(x_2)\\phi_j(x_1)v_c(r_1,r_2).
+        \]
+
+        Parameters:
+           ind:
+             Indices to be switched. (int)
+        
+        Returns:
+           int array:
+             Array of switched indices.
+             
+        
+        See Also:
+            -c2g:
+            Switch chemist's to Gabi's notation.
+        """
         return [ind[0],ind[3],ind[1],ind[2]]     
     
     def verbose1(self,txt):
+        """
+        Prints a message if `verbosity` is at least 1.
+
+        Parameters:
+           txt:
+             The message to print out. (string)
+        
+        Returns:
+           None
+             
+        
+        See Also:
+           -verbose2, verbose3, verbose4:
+           Prints messages based on `verbosity` level set.
+
+           -timed:
+           Like verbose but with intermediary time.
+        """
         if self.verbose >= 1:
             print(txt)
     
     def verbose2(self,txt):
+        """
+        Prints a message if `verbosity` is at least 2.
+
+        Parameters:
+           txt:
+             The message to print out. (string)
+        
+        Returns:
+           None
+             
+        
+        See Also:
+           -verbose1, verbose3, verbose4:
+           Prints messages based on `verbosity` level set.
+
+           -timed:
+           Like verbose but with intermediary time.
+        """
         if self.verbose >= 2:
             print(txt)
     
     def verbose3(self,txt):
+        """
+        Prints a message if `verbosity` is at least 3.
+
+        Parameters:
+           txt:
+             The message to print out. (string)
+        
+        Returns:
+           None
+             
+        
+        See Also:
+           -verbose1, verbose2, verbose4:
+           Prints messages based on `verbosity` level set.
+
+           -timed:
+           Like verbose but with intermediary time.
+        """
         if self.verbose >= 3:
             print(txt)
     
     def verbose4(self,txt):
+        """
+        Prints a message if `verbosity` is at least 4.
+
+        Parameters:
+           txt:
+             The message to print out. (string)
+        
+        Returns:
+           None
+             
+        
+        See Also:
+           -verbose1, verbose2, verbose3:
+           Prints messages based on `verbosity` level set.
+
+           -timed:
+           Like verbose but with intermediary time.
+        """
         if self.verbose >= 4:
             print(txt)
     
     def timed(self,txt,verbosity):
+        """
+        Calling this function prints a timestamp of the format
+        (`txt` took $t$ seconds), where $t$ is the time in seconds, since
+        last call of timed, or the beginning of the class call.
+
+        Parameters:
+           txt:
+             The message to print out. (string)
+           verbosity:
+             At which verbosity level the message gets printed. (int)
+
+        Returns:
+           None
+             
+        
+        See Also:
+           -verbose1, verbose2, verbose3, verbose4:
+           Prints messages based on `verbosity` level set.
+        """
         laps=time.perf_counter()
         elapsed=laps-self.intermediatetime
         self.intermediatetime=laps
@@ -499,20 +693,82 @@ class MCDE():
             print("\n")
     
     def sigma_mo_gabi(self,i,k,o,m):
+        """
+        Returns the two-electron repulsion integral in the Gabi format.
+        
+        Parameters:
+           i,k,o,m:
+             indices of the one-particle states. (int)
+
+        Returns:
+           float:
+             the two-electron repulsion integral.
+        
+        See Also:
+           -eri_mo_gabi_W:
+           two-electron repulsion integral in the Gabi format.
+        """
         # return self.eri_mo_gabi[i,k,o,m]-self.eri_mo_gabi[i,k,m,o]
         return self.eri_mo_gabi[i,k,o,m]
     
     def sigma_mo_gabi_W(self,i,k,o,m):
+        """
+        Returns the two-electron repulsion integral based on W in the Gabi format.
+        
+        Parameters:
+           i,k,o,m:
+             indices of the one-particle states. (int)
+
+        Returns:
+           float:
+             the two-electron repulsion integral based on W.
+        
+        See Also:
+           -eri_mo_gabi_W:
+           two-electron repulsion integral based on W in the Gabi format.
+        """
         # return self.eri_mo_gabi[i,k,o,m]-self.eri_mo_gabi[i,k,m,o]
         return self.eri_mo_gabi_W[i,k,o,m]
 
     # for sparse use single basis
     def virtualShift(self,index):
+        """
+        If `index` belongs to a virtual spatial orbital, the function
+        returns `self.shift_virtual_energy`, the virtual one-particle energy shift in the effective Hamiltonian
+        three-particle part.
+        
+        Parameters:
+            index:
+              index of the one-particle state. (int)
+
+        Returns:
+            float:
+              the shift in virtual energy if the index belongs to a virtual one-particle energy.
+        
+        See Also:
+            -shif_virtual_energy:
+            Energy shift of virtual energy.
+        """
         if index<self.nO:
             return 0
         return self.shift_virtual_energy
     
     def sqrt(self,x):
+        """
+        Numpy `sqrt()` function returning value as `self.data_type_sparse`.
+        
+        Parameters:
+           x:
+             float
+
+        Returns:
+           float:
+             sqrt(x)
+        
+        See Also:
+           -data_type_sparse:
+           Numpy datatype for floats used in calculations.
+        """
         return np.sqrt(x).astype(self.data_type_sparse)
 #%% ordering the BSE kernels and creating the G03 space    
     
@@ -971,7 +1227,7 @@ class MCDE():
         The effective Hamiltonian is assembled in block form,
 
         \[
-        H_{\\mathrm{SB}}
+        H_{\mathrm{SB}}
         =
         \\begin{pmatrix}
         H_{1p} & \\Sigma_{1p,3p} \\\\
@@ -1294,8 +1550,8 @@ class MCDE():
         H_{\mathrm{SB}}
         =
         \\begin{pmatrix}
-        H_{1p} & \Sigma_{1p,3p} \\\\
-        \Sigma_{1p,3p}^{\dagger} & H_{3p}
+        H_{1p} & \\Sigma_{1p,3p} \\\\
+        \\Sigma_{1p,3p}^{\dagger} & H_{3p}
         \\end{pmatrix}
         \]
 
@@ -1454,11 +1710,11 @@ class MCDE():
         \[
         H_{\mathrm{MCDE}}
         =
-        \begin{pmatrix}
-        H_{1p} & \Sigma_{1p,3p} \\\\
-        \Sigma_{1p,3p}^{\dagger} &
-        H_{3p}^{\mathrm{HF}}+\Sigma_{3p,3p}
-        \end{pmatrix}
+        \\begin{pmatrix}
+        H_{1p} & \\Sigma_{1p,3p} \\\\
+        \\Sigma_{1p,3p}^{\dagger} &
+        H_{3p}^{\mathrm{HF}}+\\Sigma_{3p,3p}
+        \\end{pmatrix}
         \]
 
         where $H_{1p}$ contains the one-particle Hartree-Fock energies,
@@ -1710,9 +1966,9 @@ class MCDE():
 
     def spinAdaptedMCDE(self,secondBorn=False):
         """
-        Construct the spin-adapted dense MCDE effective Hamiltonian,
-        which is the fastest implementation of the effective Hamiltonian, yet the
-        most memory hungry.
+        OUTDATED:
+        Construct the spin-adapted dense MCDE effective Hamiltonian, without using broadcasting.
+        It is not very efficient. Use `spinAdaptedMCDESparse` instead.
         
         This method transforms the spin-orbital three-particle basis into a
         spin-adapted spatial-orbital basis and constructs the corresponding
@@ -1741,11 +1997,6 @@ class MCDE():
         spin-adapted three-particle block, and $V$ contains the coupling
         between the one- and three-particle sectors.
         
-        Matrix elements smaller than `self.sparse_tol` are omitted during
-        construction. After assembly, elements below `self.zero_tol` are
-        removed and isolated diagonal states may optionally be eliminated using
-        `self.AuxillaryFunctions.remove_isolated_diagonals_sparse`.
-        
         Parameters:
             secondBorn : 
                 Flag indicating whether the Second-Born approximation is used.
@@ -1754,7 +2005,9 @@ class MCDE():
         
         Returns:
             matrix:
-                Spin-adapted MCDE effective Hamiltonian in sparse CSR format. (scipy.sparse.csr_matrix)
+                Spin-adapted MCDE effective Hamiltonian  (numpy array)
+            matrix (optional):
+                Spin-adapted second Born MCDE effective Hamiltonian  (numpy array)
         
         Notes:
             The size of the resulting Hamiltonian is
@@ -1772,16 +2025,15 @@ class MCDE():
             
             The factor of two arises from the two spin-adapted coupling channels
             associated with each spatial three-particle configuration.
-
-            The Hamiltonian blocks are initially
-            stored as dense NumPy arrays before being assembled and converted
-            into CSR sparse format.
         
             The method updates the internal attribute
             `self.nspace_spatials_MCDE` to reflect the reduced spin-adapted basis
             after any pruning operations.
         
-        See Also:             
+        See Also:
+            -spinAdaptedMCDESparse :
+            Very fast, but memory expensive dense spin-adapted MCDE implementation.
+        
             -spinAdaptedMCDESparseChunks :
             A speed and memory balanced implementation of the dense spin-adapted MCDE implementation.
             
