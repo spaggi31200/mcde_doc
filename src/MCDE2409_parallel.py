@@ -232,6 +232,8 @@ class MCDE():
         self.do_auto_sparse=True # does sparse spinoptimized if the basis size is bigger than a threshold
         self.do_auto_sparse_basis_threshold=3000 # if the spin optimized basis is larger than 3000, the sparse method will be used if do_auto_sparse is set to true
         self.data_type_sparse=np.float64 # precision for the sparse matrix approach
+
+        self.chunk_sparse=False #use the spinAdaptedMCDESparseChunks function if True, otherwise the spinAdaptedMCDESparse function
         self.reduce_evecs_to_1body=False # discards the 3particle part of the eigenvectors, as they are not needed for the calculation of the spectrum
         self.sparse_tol=1e-8 #put values to zero in eff hamiltonian sparse algorithm when smaller than that
         
